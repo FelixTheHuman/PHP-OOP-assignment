@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Product List</title>
+    <link href="/assets/favicon.png" rel="icon" type="image/x-icon">
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/Beautiful-Alert.css" rel="stylesheet">
+    <link href="assets/css/Footer-Clean.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+
+    <script src="assets/js/jquery.min.js"></script>
+</head>
+
+<body>
+<header>
+    <div class="row fixed-top" style="background: var(--bs-blue);color: rgb(255,255,255);">
+        <div class="col">
+            <h1 style="padding-top: 1rem!important;padding-bottom: 1rem!important;padding-left: 2rem;">Product List</h1>
+        </div>
+        <div class="col">
+            <div style="padding-top: 1.5rem;/*padding-bottom: 1rem;*/padding-right: 3rem;text-align: right;">
+                <button class="btn btn-primary shadow" onclick="location.href=&#39;/addproduct&#39;"
+                        style="color: var(--bs-blue);background: var(--bs-white);font-weight: bold;/*padding-right: 2rem;*/"
+                        type="button">ADD
+                </button>
+                <button class="btn btn-primary shadow" id="delete-product-btn" name="massDelete"
+                        style="background: var(--bs-white);color: var(--bs-blue);font-weight: bold;/*padding-left: 1rem;"
+                        type="button">MASS DELETE
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="height: 5rem;"></div>
+</header>
+<main>
+    <div class="py-5">
+        <div class="container grid-container">
+
+        </div>
+    </div>
+    <div style="height: 3rem;"></div>
+
+    <script>
+        const gridContainer = $('div.grid-container');
+        const deleteButton = $('button[name="massDelete"]');
+
+        $(document).ready(function () {
+            let json = fetchCardsJson();
+            jsonToGrid(json);
+
+            deleteButton.click(function () {
+                let idArray = [];
+                $.each($('input:checked'), function () {
+                    idArray.push($(this).val());
+                });
+                deleteByID(idArray);
+            });
+
+            $('.disclaimer').remove();
+        });
+
+        //debugJson = '{"items":[{"sku":"1d23", "name":"ba23baboey", "price":"366", "size":"4352"}, {"sku":"1n23", "name":"bababo53ey", "price":"6656", "size":"4532"}, {"sku":"1203", "name":"babab32oey", "price":"646", "size":"4362"}, {"sku":"1283", "name":"bab12aboey", "price":"6366", "size":"4732"}, {"sku":"1253", "name":"ba4baboey", "price":"6662", "size":"41382"}, {"sku":"1d23", "name":"ba23baboey", "price":"366", "size":"4352"}, {"sku":"1n23", "name":"bababo53ey", "price":"6656", "size":"4532"}, {"sku":"1203", "name":"babab32oey", "price":"646", "size":"4362"}, {"sku":"1283", "name":"bab12aboey", "price":"6366", "size":"4732"}, {"sku":"1253", "name":"ba4baboey", "price":"6662", "size":"41382"}]}';
+
+        function jsonToGrid(toParse) {
+            let rows = Math.ceil(toParse.items.length / 4);
+            gridContainer.empty();
+
+            for (let row = 0; row < rows; row++) {
+                gridContainer.append('<div class="row"></div><br>');
+
+                for (let column = 0; column < 4; column++) {
+                    let index = ((row * 4) + column);
+
+                    if (index < toParse.items.length) {
+                        let card = toParse.items[index];
+                        appendCard(card);
+                    }
+                }
+            }
+        }
+
+        function sanitized(string) {
+            return $('<div>').text(string).html();
+        }
+
+        function appendCard(card) {
+            card.id = parseInt(card.id, 10);
+            card.sku = sanitized(card.sku);
+            card.name = sanitized(card.name);
+            card.price = sanitized(card.price);
+            card.additional = sanitized(card.additional);
+            $('div.row').last().append('<div class="col-md-3"><div class="card">' +
+                '<input type="checkbox" value="' + card.id + '" class="delete-checkbox form-check-input" style="margin: 0 left;">' +
+                '<div class="card-block" style = "text-align: center;"><h6 class="card-subtitle text-muted">' + card.sku + '</h6>' +
+                '<h6 class="card-subtitle text-muted">' + card.name + '</h6>' +
+                '<h6 class="card-subtitle text-muted">' + card.price + '</h6>' +
+                '<h6 class="card-subtitle text-muted">' + card.additional + '</h6>' +
+                '<h6></h6>' +
+                '</div></div></div>')
+        }
+
+        function deleteByID(idArray) {
+            let responseJson;
+            let jsonArray = JSON.stringify(idArray)
+            let request = new XMLHttpRequest();
+            request.open('GET', '/API/removeItem?id=' + jsonArray, false);
+            request.send(null);
+
+            if (request.status === 200) {
+                responseJson = request.responseText;
+            }
+
+            jsonToGrid(JSON.parse(responseJson));
+        }
+
+        function fetchCardsJson() {
+            let request = new XMLHttpRequest();
+            request.open('GET', '/API/getItemsJson', false);
+            request.send(null);
+
+            if (request.status === 200) {
+                return JSON.parse(request.responseText);
+            }
+        }
+    </script>
+</main>
+<footer class="fixed-bottom"
+        style="bottom: 0;position: fixed;width: 100%;background: var(--bs-blue);color: var(--bs-white);">
+    <p style="text-align: center!important;margin-top: 1rem;font-weight: bold;">Sample Footer</p>
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Product Add</title>
+    <link href="/assets/favicon.png" rel="icon" type="image/x-icon">
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/Footer-Clean.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/css/Beautiful-Alert.css" rel="stylesheet">
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+
+    <link href="assets/css/alertify.min.css" rel="stylesheet"/>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="assets/js/alertify.min.js"></script>
+
+    <script src="assets/js/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+<header>
+    <div class="row fixed-top" style="background: var(--bs-blue);color: rgb(255,255,255);">
+        <div class="col">
+            <h1 style="padding-top: 1rem!important;padding-bottom: 1rem!important;padding-left: 2rem;">Product Add</h1>
+        </div>
+        <div class="col">
+            <div style="padding-top: 1.5rem;/*padding-bottom: 1rem;*/padding-right: 3rem;text-align: right;">
+                <button class="btn btn-primary shadow" id="submitBtn"
+                        style="color: var(--bs-blue);background: var(--bs-white);font-weight: bold;/*padding-right: 2rem;*/"
+                        type="button">
+                    Save
+                </button>
+                <button class="btn btn-primary shadow" id="delete-product-btn" onclick="location.href=&#39;/&#39;"
+                        style="background: var(--bs-white);color: var(--bs-blue);font-weight: bold;/*padding-left: 1rem;"
+                        type="button">Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 5rem;"></div>
+</header>
+<main style="text-align: center;">
+    <section class="position-relative py-4 py-xl-5">
+        <div class="container position-relative">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <div class="card mb-5">
+                        <div class="card-body shadow p-sm-5">
+                            <form id="product_form" method="post">
+                                <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                         data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                         id="sku" name="SKU" placeholder="SKU" required=""
+                                                         title="Should be unique for each product" type="text"></div>
+                                <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                         data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                         id="name" name="Name" placeholder="Name"
+                                                         required="" title="Provide the name of the product"
+                                                         type="text"></div>
+                                <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                         data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                         id="price" min="0.00" name="Price" placeholder="Price in $"
+                                                         required="" step="0.01"
+                                                         title="Provide the price of the product" type="number"
+                                                         value=""></div>
+                                <div class="mb-3"><select class="form-select text-muted shadow-sm" id="productType"
+                                                          required>
+                                    <option disabled hidden selected value="">Choose product type...</option>
+                                    <option value="DVD">DVD</option>
+                                    <option value="Furniture">Furniture</option>
+                                    <option value="Book">Book</option>
+                                </select></div>
+                                <div id="additional_inputs">
+                                    <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                             data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                             id="size" min="0.00" name="size" placeholder="Size (MB)"
+                                                             required="" step="0.01" title="Provide the size of the DVD"
+                                                             type="number"
+                                                             value=""></div>
+                                    <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                             data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                             id="height" min="0.00" name="Height"
+                                                             placeholder="Height (CM)" required="" step="0.01"
+                                                             title="Provide the height of the furniture" type="number"
+                                                             value=""></div>
+                                    <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                             data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                             id="width" min="0.00" name="Width" placeholder="Width (CM)"
+                                                             required="" step="0.01"
+                                                             title="Provide the width of the furniture" type="number"
+                                                             value=""></div>
+                                    <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                             data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                             id="length" min="0.00" name="Length"
+                                                             placeholder="Length (CM)" required="" step="0.1"
+                                                             title="Provide the length of the furniture" type="number"
+                                                             value=""></div>
+                                    <div class="mb-3"><input class="shadow-sm form-control" data-bs-placement="right"
+                                                             data-bs-toggle="tooltip" data-bss-tooltip=""
+                                                             id="weight" min="0.00" name="Weight"
+                                                             placeholder="Weight (KG)" required="" step="0.01"
+                                                             title="Provide the weight of the book" type="number"
+                                                             value=""></div>
+                                </div>
+                                <button class="btn btn-primary d-none d-block w-100" id="submit" type="submit">Send
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="position-relative py-4 py-xl-5"></section>
+    </section>
+    <div style="height: 3rem;"></div>
+    <script>
+        let dvdInputs = '<div class="mb-3"><input id="size" class="shadow-sm form-control" type="number" data-bs-toggle="tooltip" data-bs-placement="right" min="0.00" step="0.01" value name="Size" placeholder="Size (MB)" required title="Provide the size of the DVD"/></div> <div class="mb-3"><p>The DVD is a digital optical disc data storage format. Currently, allowing up to 17.08 GB of storage, the medium can store any kind of digital data and was widely used for software and other computer files as well as video programs watched using DVD players. DVDs offer higher storage capacity than compact discs while having the same dimensions.</p><strong>The more you know...</strong></div>';
+        let furnitureInput = '<div class="mb-3"><input id="height" class="shadow-sm form-control" type="number" data-bs-toggle="tooltip" data-bs-placement="right" min="0.00" step="0.01" value name="Height" placeholder="Height (CM)" required title="Provide the height of the furniture"/></div> <div class="mb-3"><input id="width" class="shadow-sm form-control" type="number" data-bs-toggle="tooltip" data-bs-placement="right" min="0.00" step="0.01" value name="Width" placeholder="Width (CM)" required title="Provide the width of the furniture"/></div> <div class="mb-3"><input id="length" class="shadow-sm form-control" type="number" data-bs-toggle="tooltip" data-bs-placement="right" min="0.00" step="0.01" value name="Length" placeholder="Length (CM)" required title="Provide the length of the furniture"/></div> <div class="mb-3"><p>Furniture refers to movable objects intended to support various human activities such as seating, sleeping and eating. Furniture is also used to hold objects at a convenient height for work, or to store things.</p><strong>The more you know...</strong></div>';
+        let bookInputs = '<div class="mb-3"><input id="weight" class="shadow-sm form-control" type="number" data-bs-toggle="tooltip" data-bs-placement="right" min="0.00" step="0.01" value name="Weight" placeholder="Weight (KG)" required title="Provide the weight of the book"/></div><div class="mb-3"><p>A book is a medium for recording information in the form of writing or images, typically composed of many pages (made of papyrus, parchment, vellum, or paper) bound together and protected by a cover.The technical term for this physical arrangement is codex.</p><strong>The more you know...</strong></div>';
+
+        const additionalInputs = {
+            'DVD': dvdInputs,
+            'Book': bookInputs,
+            'Furniture': furnitureInput
+        };
+
+        const additionalInputsSelector = $('#additional_inputs');
+        const productTypeSelector = $('#productType');
+        const formSelector = $('form');
+        const emptyFieldNotification = 'Please, submit required data';
+        const wrongTypeNotification = 'Please, provide the data of indicated type';
+        const SkuNotUnique = 'Item with specified SKU already exists';
+
+        additionalInputsSelector.empty();
+
+        function defineValidationListener() {
+            let typeNotSet = productTypeSelector.find(':selected').val() === '';
+            if (typeNotSet) {
+                alertify.notify(emptyFieldNotification);
+                window.alertEmptyFieldNotSent = false;
+            }
+            $('input[required]').on('invalid', function () {
+                let value = $(this).val();
+                let type = $(this).attr('type');
+
+                if (window.alertEmptyFieldNotSent && (!value)) {
+                    alertify.notify(emptyFieldNotification);
+                    window.alertEmptyFieldNotSent = false;
+                }
+
+                if (window.alertNonNumericNotSent && type === 'number' && !isNumeric(value)) {
+                    alertify.notify(wrongTypeNotification);
+                    window.alertNonNumericNotSent = false;
+                }
+            });
+        }
+
+        productTypeSelector.on('change', function () {
+            additionalInputsSelector.empty();
+            additionalInputsSelector.append(additionalInputs[this.value]);
+        });
+
+        $('#submitBtn').click(function () {
+            let value = productTypeSelector.find(':selected').val();
+            window.alertEmptyFieldNotSent = true;
+            window.alertNonNumericNotSent = true;
+            defineValidationListener();
+
+            formSelector.submit(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/API/addItem',
+                    data: formSelector.serialize() + '&Type=' + value,
+                    success: function () {
+                        location.href = '/';
+                    },
+                }).fail(function(data, textStatus, jqXHR){
+                    let request = new XMLHttpRequest();
+                    request.open('GET', '/API/isUniqueSku?sku=' + $('#sku').val(), false);
+                    request.send(null);
+
+                    if (request.status === 200) {
+                        let isUniqueSku = JSON.parse(request.responseText);
+                        if (isUniqueSku === false) {
+                            alertify.error(SkuNotUnique);
+                        }
+                    }
+                });
+
+                return false
+            });
+            $('#submit').click();
+        });
+
+        $(document).ready(function () {
+            $('.disclaimer').remove()
+        })
+
+        function isNumeric(str) {
+            if (typeof str != "string") return false
+            if (str === '') return false
+            return !isNaN(str) && !isNaN(parseFloat(str)) && parseFloat(str)>=0;
+        }
+
+    </script>
+</main>
+<footer class="fixed-bottom"
+        style="bottom: 0;position: fixed;width: 100%;background: var(--bs-blue);color: var(--bs-white);">
+    <p onclick="window.open(atob('aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ=='), '_blank').focus();"
+       style="text-align: center!important;margin-top: 1rem;font-weight: bold;">Sample Footer</p>
+</footer>
+
+</body>
+
+</html>
